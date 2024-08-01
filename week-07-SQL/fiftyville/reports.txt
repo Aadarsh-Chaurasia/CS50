@@ -1,0 +1,96 @@
+###
+ALL THE QUERIES AND THOUGHT PROCESS THAT ARE NOT MENTIONED ON LOG.SQL
+###
+
+
+-- -- CHECKING OUT THE INTERVIEWS
+-- SELECT name,transcript FROM interviews
+--   WHERE year = 2023 AND month = 7 AND day = 28;
+
+-- -- Sometime within ten minutes of the theft, I saw the thief get into a car in the bakery parking lot and drive away.
+-- -- Eugene :  I was walking by the ATM on Leggett Street and saw the thief there withdrawing some money.
+-- -- Raymond : As the thief was leaving the bakery, they called someone who talked to them for less than a minute. In the call, I heard the thief say that they were planning to take the earliest flight out of Fiftyville tomorrow. The thief then asked the person on the other end of the phone to purchase the flight ticket.
+
+
+-- -- WILL BE LOOKING FOR BAKERY RELATED INFO.
+-- .schema bakery_security_logs
+
+-- SELECT hour, minute, activity,license_plate
+--  FROM bakery_security_logs
+--  WHERE year = 2023 AND month = 7 AND day = 28;
+
+
+-- -- GETTING THE LIST OF VEHICLE THAT EXITED AFTER 10:15 and before or at 10:25.
+-- SELECT license_plate
+--  FROM bakery_security_logs
+--  WHERE year = 2023 AND month = 7 AND day = 28
+--  AND activity = 'exit' AND hour = 10 AND minute >= 15 AND minute <= 25;
+
+-- -- GETTING THE NAME OF OWNERS OF LISTED VEHICLE
+-- WITH sus_plate AS (
+--     SELECT license_plate
+--     FROM bakery_security_logs
+--     WHERE year = 2023 AND month = 7 AND day = 28
+--     AND activity = 'exit' AND hour = 10 AND minute >= 15 AND minute <= 25
+--     ORDER BY minute
+-- )
+-- SELECT name FROM people WHERE license_plate IN sus_plate;
+
+
+
+
+
+
+-- -- WILL CHECK CALL LOG AT 10:15 (done), FLIGHTS AFTER 10:15 (done) AND PEOPLE AT ATM EARLIER THAT DAY.
+
+-- -- Checking phone call log after 10:15 28 July.
+-- select caller, receiver, duration  from phone_calls WHERE year = 2023 AND month = 7 AND day = 28;
+
+
+-- -- CHECKING CALLER IN SUSPECTS
+-- SELECT DISTINCT name, phone_number FROM sus join phone_calls on sus.phone_number = phone_calls.caller
+-- WHERE year = 2023 AND month = 7 AND day = 28;
+
+
+
+
+
+
+
+
+-- -- CHECKING SUSPECTS IN FLIGHT
+  -- select flights.id, day, month, hour, minute from flights
+  -- JOIN airports ON flights.origin_airport_id = airports.id
+  --   WHERE airports.city = 'Fiftyville'
+  --   AND flights.year = 2023
+  --   AND flights.month = 7 AND flights.day = 29
+  --   ORDER BY month, day, hour, minute;
+
+  -- SELECT DISTINCT name FROM sus
+  -- JOIN passengers ON passengers.passport_number = sus.passport_number
+  -- JOIN flights ON passengers.flight_id = flights.id
+  -- where flights.id = 36
+
+
+
+
+-- -- ATM at Leggett Street
+-- select account_number from atm_transactions WHERE year = 2023 AND month = 7 AND day = 28 and transaction_type = "withdraw" and atm_location = "Leggett Street";
+
+-- -- CHECKING IF SUSPECT AT ATM
+-- SELECT DISTINCT name FROM sus
+--   JOIN atm_transactions ON sus.account_number = atm_transactions.account_number
+--   WHERE year = 2023 AND month = 7 AND day = 28 and transaction_type = "withdraw" and atm_location = "Leggett Street";
+
+-- CHECKING IF ROBIN WAS WITH BRUCE ON FLIGHT
+SELECT DISTINCT name FROM people
+  WHERE people.passport_number in
+  (
+    SELECT DISTINCT passport_number FROM passengers
+      WHERE passengers.flight_id in
+      (
+        SELECT flight_id FROM passengers
+        JOIN people ON people.passport_number = passengers.passport_number
+        WHERE people.name = 'Bruce'
+      )
+);
