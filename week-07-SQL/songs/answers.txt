@@ -1,0 +1,14 @@
+Question:
+If songs.db contains the top 100 songs of one listener from 2018, how would you characterize their audio aura?
+Answer:
+I will first get the avg energy, danceability and valence of songs using
+SELECT AVG(energy) AS avg_energy, AVG(valence) AS avg_valence,AVG(danceability) AS avg_danceability FROM songs;
+and this will allow us to calculate the aura of the listner.
+
+Question:
+Hypothesize about why the way you’ve calculated this aura might not be very representative of the listener. What better ways of calculating this aura would you propose?
+
+Answer 2:
+This way of calculating aura might not be very representative of the listener because the data to just 100 songs is very limited and on average a person listens more that 100 songs in a year.
+Also another limiting factor can be short duration, since a person's prefrence changes over time, only 1 year data might not be the accurate representation of a person's aura.
+A better approach will be to include more that 100 songs that person listens to, we can give weight to songs based on number of times listner listens to that particular song and then calculate the aura accordingly.
