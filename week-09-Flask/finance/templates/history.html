@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block main %}
+<h1> Welcome {{user.username}},  Your current balance is : {{user.cash}}</h1>
+
+<h2>Transactions</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Symbol</th>
+            <th>Shares</th>
+            <th>Buy Price</th>
+            <th>Amount</th>
+            <th>Time</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        <!-- TODO: Loop through the database entries to display them in this table -->
+        {% for data in user_data %}
+        <tr>
+            <td>{{data.symbol}}</td>
+            <td>{{data.shares}}</td>
+            <td>{{data.price | usd}}</td>
+            <td>{{data.type}}</td>
+            <td>{{data.time}}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+

@@ -1,0 +1,8 @@
+{%extends 'layout.html' %}
+
+{% block body %}
+
+{% for user in users %}
+<h4>{{user.name}} : {{user.age}} year old</h4>
+{% endfor%}
+{% endblock %}

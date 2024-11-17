@@ -1,0 +1,11 @@
+1. Created bootstrap starter tamplate.
+
+2. Created a `container` and put header and some other text in it.
+3. Centered whole container with `text-center` class.
+
+4. Added external css with `<link rel="stylesheet" href="styles.css">`
+
+5. Added some more text then created a `row` div that will contain all the state images (3 as of now).
+6. Added images and made them circular using `rounded-circular`, since they were not perfectly circular, hardcoded height and width.
+
+7. Creating a Crousel.

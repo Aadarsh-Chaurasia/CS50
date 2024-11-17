@@ -1,0 +1,9 @@
+{%extends 'layout.html' %}
+
+{% block body %}
+
+<h3> Hello {{name}}, You are {{age}} year old ! </h3>
+<form action='/users' method='get'>
+    <button type='submit'> View Registered users</button>
+</form>
+{% endblock %}
